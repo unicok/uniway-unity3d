@@ -129,7 +129,7 @@ namespace Uniway {
                     using(BinaryWriter bw = new BinaryWriter(ms)) {
                         bw.Write((uint)9);
                         bw.Write((uint)0);
-                        bw.Write((uint)0);
+                        bw.Write((byte)0);
                         bw.Write(remoteID);
                     }
                 }
@@ -174,7 +174,7 @@ namespace Uniway {
                 using(BinaryWriter bw = new BinaryWriter(ms)) {
                     bw.Write((uint)9);
                     bw.Write((uint)0);
-                    bw.Write((uint)4);
+					bw.Write((byte)4);
                     bw.Write(connID);
                 }
             }
