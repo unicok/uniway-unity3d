@@ -21,20 +21,13 @@ namespace Uniway {
 			DOTest(netSteam, 10086);
 		}
 
-		[Test]
-		public void Test_NoSnet_2()
-		{
-			var tcpClient = new TcpClient("127.0.0.1", 10010);
-			var netSteam = tcpClient.GetStream();
-			DOTest(netSteam, 10087);
-		}
-
         [Test]
         public void Test_Snet_Encrypt() 
         {
             var stream = new SnetStream(1024, true);
             stream.Connect("127.0.0.1", 10010);
 			DOTest(stream, 10086);
+			stream.Close();
         }
 
         [Test]

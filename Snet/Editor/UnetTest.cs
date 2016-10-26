@@ -75,42 +75,42 @@ namespace Snet {
         }
 
 
-        [Test, Ignore]
+        [Test]
         public void Test_Stable_NoEncrypt() {
             StreamTest(false, false, 10010);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Stable_Encrypt() {
             StreamTest(true, false, 10011);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Unstable_NoEncrypt() {
             StreamTest(false, false, 10012);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Unstable_Encrypt() {
             StreamTest(true, false, 10013);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Stable_NoEncrypt_Reconn() {
             StreamTest(false, true, 10010);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Stable_Encrypt_Reconn() {
             StreamTest(true, true, 10011);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Unstable_NoEncrypt_Reconn() {
             StreamTest(false, true, 10012);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Unstable_Encrypt_Reconn() {
             StreamTest(true, true, 10013);
         }
@@ -120,7 +120,7 @@ namespace Snet {
 
             stream.Connect("127.0.0.1", port);
 
-            for (int i = 0; i < 100000; i++) {
+            for (int i = 0; i < 10000; i++) {
                 var a = RandBytes(100);
                 var b = a;
                 var c = new byte[a.Length];
@@ -148,42 +148,42 @@ namespace Snet {
             stream.Close();
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Stable_NoEncrypt_Async() {
             StreamTestAsync(false, false, 10010);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Stable_Encrypt_Async() {
             StreamTestAsync(true, false, 10011);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Unstable_NoEncrypt_Async() {
             StreamTestAsync(false, false, 10012);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Unstable_Encrypt_Async() {
             StreamTestAsync(true, false, 10013);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Stable_NoEncrypt_Async_Reconn() {
             StreamTestAsync(false, true, 10010);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Stable_Encrypt_Async_Reconn() {
             StreamTestAsync(true, true, 10011);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Unstable_NoEncrypt_Async_Reconn() {
             StreamTestAsync(false, true, 10012);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Test_Unstable_Encrypt_Async_Reconn() {
             StreamTestAsync(true, true, 10013);
         }
@@ -194,7 +194,7 @@ namespace Snet {
             var ar = stream.BeginConnect("127.0.0.1", port, null, null);
             stream.WaitConnect(ar);
 
-            for (int i = 0; i < 100000; i++) {
+            for (int i = 0; i < 1000; i++) {
                 var a = RandBytes(100);
                 var b = a;
                 var c = new byte[a.Length];
