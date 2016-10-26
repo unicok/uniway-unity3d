@@ -98,6 +98,12 @@ namespace Uniway {
                     }
                 }
 				this.s.Close();
+
+                if (this.pingWatchTimer != null)
+                    this.pingWatchTimer.Close();
+
+                if(this.keepAliveTimer != null)
+                    this.keepAliveTimer.Close();
             }
         }
 
