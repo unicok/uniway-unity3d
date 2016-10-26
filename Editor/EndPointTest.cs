@@ -3,6 +3,8 @@ using UnityEditor;
 using NUnit.Framework;
 using System.Net.Sockets;
 using System.Threading;
+using System.IO;
+using Snet;
 
 namespace Uniway {
 	
@@ -12,52 +14,71 @@ namespace Uniway {
         Conn conn;
 
 		[Test]
-		public void ClinetTest()
+        public void Test_NoSnet()
 		{
+			var tcpClient = new TcpClient("127.0.0.1", 10010);
+			var netSteam = tcpClient.GetStream();
+            DOTest(netSteam);
+		}
+
+        [Test]
+        public void Test_Snet_Encrypt() 
+        {
+            var stream = new SnetStream(1024, true);
+            stream.Connect("127.0.0.1", 10010);
+            DOTest(stream);
+        }
+
+        [Test]
+        public void Test_Snet_NoEncrypt() {
+            var stream = new SnetStream(1024, false);
+            stream.Connect("127.0.0.1", 10010);
+            DOTest(stream);
+        }
+
+        private void DOTest(Stream stream) {
             System.Action timeoutAction = () => {
                 endPoint.Close();
                 conn.Close();
                 Debug.Log("timeout.");
             };
 
-			var tcpClient = new TcpClient("127.0.0.1", 10010);
-			var netSteam = tcpClient.GetStream();
-            endPoint = new EndPoint(netSteam, 1000, 5000, timeoutAction);
-			conn = endPoint.Dial(10086);
-			var random = new System.Random();
+            endPoint = new EndPoint(stream, 1000, 5000, timeoutAction);
+            conn = endPoint.Dial(10086);
+            var random = new System.Random();
 
-            Thread.Sleep(1000 * 3);
+            Thread.Sleep(1000 * 1);
 
             Debug.LogFormat("ConnID:{0}, RemoteID:{1}", conn.ID, conn.RemoteID);
 
-			for (int i = 0; i < 100; i++) {
-				var n = random.Next(10, 2000);
-				var msg1 = new byte[n];
-				random.NextBytes(msg1);
+            for (int i = 0; i < 100; i++) {
+                var n = random.Next(10, 2000);
+                var msg1 = new byte[n];
+                random.NextBytes(msg1);
 
-				Assert.IsTrue(conn.Send(msg1));
+                Assert.IsTrue(conn.Send(msg1));
 
-				byte[] msg2 = null;
-				for(;;){
-					msg2 = conn.Receive();
-					Assert.NotNull(msg2);
-			
-					if(msg2 == Conn.NoMsg) {
-						continue;
-					}
-					break;
-				}
+                byte[] msg2 = null;
+                for (; ; ) {
+                    msg2 = conn.Receive();
+                    Assert.NotNull(msg2);
 
-				Assert.AreEqual(msg1.Length, msg2.Length);
+                    if (msg2 == Conn.NoMsg) {
+                        continue;
+                    }
+                    break;
+                }
 
-				for (var j = 0; j < n; j++) {
-					Assert.AreEqual(msg1[j], msg2[j]);
-				}
+                Assert.AreEqual(msg1.Length, msg2.Length);
 
-				Debug.LogFormat("{0}, {1}", i, msg1.Length);
-			}
+                for (var j = 0; j < n; j++) {
+                    Assert.AreEqual(msg1[j], msg2[j]);
+                }
 
-			conn.Close ();
-		}
+                Debug.LogFormat("{0}, {1}", i, msg1.Length);
+            }
+
+            conn.Close();
+        }
 	}
 }
