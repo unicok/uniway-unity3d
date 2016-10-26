@@ -136,7 +136,7 @@ namespace Snet {
             DH64 dh64 = new DH64();
             dh64.KeyPair(out privateKey, out publicKey);
 
-            using (MemoryStream ms = new MemoryStream(request, 0, 8)) {
+            using (MemoryStream ms = new MemoryStream(request, 8, 8)) {
                 using (BinaryWriter bw = new BinaryWriter(ms)) {
                     bw.Write(publicKey);
                 }

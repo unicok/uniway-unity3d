@@ -18,7 +18,15 @@ namespace Uniway {
 		{
 			var tcpClient = new TcpClient("127.0.0.1", 10010);
 			var netSteam = tcpClient.GetStream();
-            DOTest(netSteam);
+			DOTest(netSteam, 10086);
+		}
+
+		[Test]
+		public void Test_NoSnet_2()
+		{
+			var tcpClient = new TcpClient("127.0.0.1", 10010);
+			var netSteam = tcpClient.GetStream();
+			DOTest(netSteam, 10087);
 		}
 
         [Test]
@@ -26,25 +34,25 @@ namespace Uniway {
         {
             var stream = new SnetStream(1024, true);
             stream.Connect("127.0.0.1", 10010);
-            DOTest(stream);
+			DOTest(stream, 10086);
         }
 
         [Test]
         public void Test_Snet_NoEncrypt() {
             var stream = new SnetStream(1024, false);
             stream.Connect("127.0.0.1", 10010);
-            DOTest(stream);
+            DOTest(stream, 10086);
         }
 
-        private void DOTest(Stream stream) {
-            System.Action timeoutAction = () => {
-                endPoint.Close();
-                conn.Close();
-                Debug.Log("timeout.");
-            };
+        private void DOTest(Stream stream, uint serverID) {
+//            System.Action timeoutAction = () => {
+//                endPoint.Close();
+//                conn.Close();
+//                Debug.Log("timeout.");
+//            };
 
-            endPoint = new EndPoint(stream, 1000, 5000, timeoutAction);
-            conn = endPoint.Dial(10086);
+            endPoint = new EndPoint(stream, 1000, 5000, null);
+			conn = endPoint.Dial(serverID);
             var random = new System.Random();
 
             Thread.Sleep(1000 * 1);
